@@ -18,6 +18,11 @@ public class Member {
     @NotEmpty
     private String password;
 
+    @NotEmpty
+    private String passwordCheck;
+
+    private MemberType memberType;
+
     public Member(String loginId, String name, String password){
         this.loginId=loginId;
         this.name=name;

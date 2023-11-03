@@ -17,14 +17,6 @@ public class LoginService {
     private final MemberRepository memberRepository;
 
     public Member login(String loginId, String password) throws SQLException {
-//        Optional<Member> byLoginId = memberRepository.findByLoginId(loginId);
-//        Member member = byLoginId.get();
-//        if (member.getPassword().equals(password)) {
-//            return member;
-//        } else {
-//            return null;
-//        }
-
         Member member = memberRepository.findByLoginId(loginId);
         if (member == null) {
             return null;

@@ -2,62 +2,62 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .container {
-            max-width: 560px;
-        }
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-    </style>
+    <link  rel="stylesheet"href="/css/addlogin/sign.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/main/main.css">
 </head>
 <body>
-<div class="container">
-    <div class="py-5 text-center">
-        <h2>회원 가입</h2>
-    </div>
-    <h4 class="mb-3">회원 정보 입력</h4>
-    <form action="" th:action th:object="${member}" method="post">
+<div class="header">
+    <h1 class="Logo_Nex">회원가입</h1>
+</div>
+    <form action="" th:action th:object="${member}" method="post" class="main">
+        <div class="inPut_sign">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                th:text="${err}">전체 오류 메시지</p>
         </div>
-        <div>
-            <label for="loginId">로그인 ID</label>
-            <input type="text" id="loginId" th:field="*{loginId}" class="form-control"
+
+            <label for="loginId"></label>
+            <input type="text" id="loginId" th:field="*{loginId}" placeholder="ID" class="inPutIDPWname"
                    th:errorclass="field-error">
-            <div class="field-error" th:errors="*{loginId}" />
-        </div>
-        <div>
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" th:field="*{password}"
-                   class="form-control"
+            <div class="field-error" th:errors="*{loginId}"></div>
+
+
+            <label for="password"></label>
+            <input type="password" id="password" th:field="*{password}" placeholder="PW"
+                   class="inPutIDPWname"
                    th:errorclass="field-error">
-            <div class="field-error" th:errors="*{password}" />
-        </div>
-        <div>
-            <label for="name">이름</label>
-            <input type="text" id="name" th:field="*{name}" class="form-control"
+            <div class="field-error" th:errors="*{password}"></div>
+
+
+
+<!--            수정 해야함  -->
+            <label for="password"></label>
+            <input type="password" name="pwCheck" id="pwCheck" th:field="*{passwordCheck}"
+                   placeholder="PWCheck" class="inPutIDPWname"
                    th:errorclass="field-error">
-            <div class="field-error" th:errors="*{name}" />
-        </div>
-        <hr class="my-4">
-        <div class="row">
-            <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit">회원
-                    가입</button>
+            <div class="field-error" th:errors="*{passwordCheck}"></div>
+            <!--  -->
+
+
+
+            <input type="text" id="name" th:field="*{name}" class="inPutIDPWname"
+                   placeholder="Name"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{name}"></div>
+
+
+<!--            수정 -->
+
+            <div th:each="type: ${memberType}" class="gender">
+                <input type="radio" th:field="*{memberType}" th:value="${type.name()}">
+                <label th:for="${#ids.prev('memberType')}" th:text="${type.description}">
+                </label>
             </div>
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/}'|"
-                        type="button">취소</button>
-            </div>
+
         </div>
+        <button class="btnLogin" type="submit">회원가입</button>
     </form>
-</div> <!-- /container -->
+ <!-- /container -->
 </body>
 </html>

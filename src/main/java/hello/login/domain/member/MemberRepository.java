@@ -21,19 +21,19 @@ public class MemberRepository {
     private static Map<Long, Member> store=new HashMap<>();
     private static long sequence = 0L;
 
-//    public Member save(Member member) {
-//        member.setId(++sequence);
-//        log.info("save: member={}",member);
-//        store.put(member.getId(),member);
-//        return member;
-//    }
-
     public Member save(Member member) throws SQLException {
         member.setId(UUID.randomUUID().toString());
-        String sql = "insert into member(id,loginID, password,name) values(?,?,?,?)";
+        String sql = "insert into member(id,loginID, password,name,gender) values(?,?,?,?,?)";
 
         Connection con = null;
         PreparedStatement pstmt = null; //DB에 쿼리날리기
+
+        //중복 방지
+        Member existMember = findByLoginId(member.getLoginId());
+        if(existMember!=null&&existMember.getLoginId().equals(member.getLoginId())){
+            return null;
+        }
+
 
         try {
             con = getConnection();
@@ -42,6 +42,7 @@ public class MemberRepository {
             pstmt.setString(2, member.getLoginId()); //파라미터에 대한 값 바인딩
             pstmt.setString(3, member.getPassword());
             pstmt.setString(4,member.getName());
+            pstmt.setString(5,member.getMemberType().getDescription());
 
             pstmt.executeUpdate(); //실행
             return member;
@@ -58,29 +59,7 @@ public class MemberRepository {
     public Member findById(long id) {
         return store.get(id);
     }
-//
-//    public Optional<Member> findByLoginId(String loginId) {
-////        List<Member> all = findAll();
-////        for (Member member : all) {
-////            if (member.getLoginId().equals(loginId)) {
-////                return Optional.of(member);
-////            }
-////        }
-////        return Optional.empty();
-//
-//        return findAll().stream()
-//                .filter(member -> member.getLoginId().equals(loginId))
-//                .findFirst();
-//        /*
-//        return findAll().stream() // 마치 루프를 도는것이다.
-//                .filter(member -> member.getLoginId().equals(loginId))
-//                //filter 만족하는 조건만 넘어간다.
-//                .findFirst(); //먼저 나오는애를 반환한다.
-//                */
-//    }
-
-
-    public Member findByLoginId(String memberId) throws SQLException {
+    public Member findByLoginId(String loginId) throws SQLException {
         String sql = "select * from member where loginId=?";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -89,7 +68,7 @@ public class MemberRepository {
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, memberId);
+            pstmt.setString(1, loginId);
             rs = pstmt.executeQuery(); // 업데이트 아님 애는 찾아주는거
 
             if (rs.next()) {
@@ -112,11 +91,27 @@ public class MemberRepository {
     }
 
     public List<Member> findAll() {
-        return new ArrayList<>(store.values());
-    }
-
-    public void clearStore() {
-        store.clear();
+        String sql = "select * from member";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            List<Member> members = new ArrayList<>();
+            while (rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getString("id"));
+                member.setLoginId(rs.getString("loginId"));
+                members.add(member);
+            }
+            return members;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
     }
 
     private void close(Connection cos, Statement stmt, ResultSet rs) {
