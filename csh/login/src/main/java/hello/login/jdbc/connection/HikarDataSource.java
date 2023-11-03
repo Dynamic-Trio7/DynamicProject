@@ -11,13 +11,14 @@ import static hello.login.jdbc.connection.ConnectionConst.*;
 public class HikarDataSource {
 
     MemberRepository repository;
+
     @Bean
-    void setting(){
-        HikariDataSource dataSource=new HikariDataSource();
+    void setting() {
+        HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(URL);
         dataSource.setUsername(USERNAME);
         dataSource.setPassword(PASSWORD);
-        repository=new MemberRepository(dataSource);
+        repository = new MemberRepository(dataSource);
 
     }
 }

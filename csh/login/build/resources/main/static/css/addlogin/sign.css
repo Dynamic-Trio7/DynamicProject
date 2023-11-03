@@ -36,6 +36,12 @@
 }
 .gender{
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: row; /* 라디오 버튼과 라벨를 가로로 정렬 */
+}
+
+.gender label{
+    display: inline;
 }
 .btnLogin{
     width: 100%;
