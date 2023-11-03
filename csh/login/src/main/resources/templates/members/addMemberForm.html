@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link  rel="stylesheet"href="/css/addlogin/sign.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/main/main.css">
+</head>
+<body>
+<div class="header">
+    <h1 class="Logo_Nex">회원가입</h1>
+</div>
+    <form action="" th:action th:object="${member}" method="post" class="main">
+        <div class="inPut_sign">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">전체 오류 메시지</p>
+        </div>
+
+            <label for="loginId"></label>
+            <input type="text" id="loginId" th:field="*{loginId}" placeholder="ID" class="inPutIDPWname"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{loginId}"></div>
+
+
+            <label for="password"></label>
+            <input type="password" id="password" th:field="*{password}" placeholder="PW"
+                   class="inPutIDPWname"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{password}"></div>
+
+
+
+<!--            수정 해야함  -->
+            <label for="password"></label>
+            <input type="password" name="pwCheck" id="pwCheck" th:field="*{passwordCheck}"
+                   placeholder="PWCheck" class="inPutIDPWname"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{passwordCheck}"></div>
+            <!--  -->
+
+
+
+            <input type="text" id="name" th:field="*{name}" class="inPutIDPWname"
+                   placeholder="Name"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{name}"></div>
+
+
+<!--            수정 -->
+
+            <div th:each="type: ${memberType}" class="gender">
+                <input type="radio" th:field="*{memberType}" th:value="${type.name()}">
+                <label th:for="${#ids.prev('memberType')}" th:text="${type.description}">
+                </label>
+            </div>
+
+        </div>
+        <button class="btnLogin" type="submit">회원가입</button>
+    </form>
+ <!-- /container -->
+</body>
+</html>
