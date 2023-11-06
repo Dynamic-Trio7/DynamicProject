@@ -1,9 +1,13 @@
 package hello.login.domain.member;
 
 import hello.login.jdbc.connection.DBConnectionUtil;
+import hello.login.jdbc.ex.ExTranslator;
+import hello.login.jdbc.ex.MyDBException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,12 +20,11 @@ import java.util.*;
 @Repository
 @RequiredArgsConstructor
 public class MemberRepository {
-
     private final DataSource dataSource;
-    private static Map<Long, Member> store=new HashMap<>();
-    private static long sequence = 0L;
 
-    public Member save(Member member) throws SQLException {
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public Member save(Member member) {
         member.setId(UUID.randomUUID().toString());
         String sql = "insert into member(id,loginID, password,name,gender) values(?,?,?,?,?)";
 
@@ -34,32 +37,49 @@ public class MemberRepository {
             return null;
         }
 
+        String hashPassword = passwordEncoder.encode(member.getPassword());
 
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql); // 데이터베이스에 전달할 SQL과 파라미터로 전달할 데이터들을 준비한다
             pstmt.setString(1,member.getId());
             pstmt.setString(2, member.getLoginId()); //파라미터에 대한 값 바인딩
-            pstmt.setString(3, member.getPassword());
+            pstmt.setString(3, hashPassword);
             pstmt.setString(4,member.getName());
             pstmt.setString(5,member.getMemberType().getDescription());
 
             pstmt.executeUpdate(); //실행
             return member;
         } catch (SQLException e) {
-            log.error("db error", e);
-            throw e;
+            throw new MyDBException(e);
         } finally {
             close(con, pstmt, null);
         }
 
     }
 
+    public void updateSession(String session, String id ){
+        String sql = "update member set session=? where id=?";
+        Connection con=null;
+        PreparedStatement pstmt=null;
 
-    public Member findById(long id) {
-        return store.get(id);
+        try{
+            con=getConnection();
+            pstmt=con.prepareStatement(sql);
+            pstmt.setString(1,session);
+            pstmt.setString(2,id);
+            log.info("id={}",id);
+            log.info("session={}",session);
+            pstmt.executeUpdate();
+        }catch(SQLException e){
+            throw new MyDBException(e);
+        }finally {
+            close(con,pstmt,null);
+        }
     }
-    public Member findByLoginId(String loginId) throws SQLException {
+
+
+    public Member findByLoginId(String loginId) {
         String sql = "select * from member where loginId=?";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -76,15 +96,15 @@ public class MemberRepository {
                 member.setLoginId(rs.getString("loginId"));
                 member.setPassword(rs.getString("password"));
                 member.setName(rs.getString("name"));
-                log.info("password={}",member.getName());
+                member.setId(rs.getString("id"));
+                log.info("id={}",member.getId());
                 return member;
             } else {
                 return null;
             }
 
         } catch (SQLException e) {
-            log.error("db error", e);
-            throw e;
+            throw new MyDBException(e);
         } finally {
             close(con, pstmt, rs);
         }

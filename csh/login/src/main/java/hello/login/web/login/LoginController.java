@@ -5,10 +5,9 @@ import hello.login.domain.login.LoginService;
 import hello.login.domain.member.Member;
 import hello.login.web.login.loginform.LoginForm;
 import hello.login.web.session.SessionConst;
-import hello.login.web.session.SessionManger;
+import hello.login.web.session.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -19,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.*;
 import java.sql.SQLException;
+import java.util.Date;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
     private final LoginService loginService;
-    private final SessionManger sessionManger;
+    private final SessionService sessionService;
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("loginForm") LoginForm loginForm) {
@@ -49,6 +49,8 @@ public class LoginController {
         HttpSession session = request.getSession(); //디폴트가 true
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+        Date date = new Date(session.getLastAccessedTime());
+        sessionService.sessionSave(String.valueOf(date),form.getLoginId());
 
 
         return "redirect:" + redirectURL;

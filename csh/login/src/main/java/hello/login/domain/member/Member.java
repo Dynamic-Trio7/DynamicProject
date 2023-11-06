@@ -11,7 +11,7 @@ public class Member {
 
     private String id;
     @NotEmpty
-    @Size(max = 10)
+    @Size(max = 16, message = "길이가 15자 이하여야 됩니다.")
     private String loginId; //로그인 ID
     @NotEmpty
     private String name; //사용자 이름
