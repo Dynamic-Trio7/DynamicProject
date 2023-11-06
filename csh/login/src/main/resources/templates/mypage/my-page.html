@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/mypage/mypage.css" />
+  <title>마이페이지</title>
+</head>
+<body>
+<div class="container">
+  <h1>마이페이지</h1>
+  <div class="profile">
+    <img src="profile.jpg" alt="프로필 사진" />
+    <input
+            type="file"
+            id="profilePicture"
+            accept="image/*"
+            style="display: none"
+    />
+    <label for="profilePicture" class="upload-button"
+    >프로필 사진 업로드</label>
+  </div>
+  <div class="user-info">
+    <label for="username">아이디:</label>
+    <span id="username"th:text="${member.name}"></span>
+    <br />
+    <label for="description">본인 설명:</label>
+    <p id="description">여기에 본인 설명을 입력하세요.</p>
+  </div>
+</div>
+</body>
+</html>

@@ -97,7 +97,6 @@ public class MemberRepository {
                 member.setPassword(rs.getString("password"));
                 member.setName(rs.getString("name"));
                 member.setId(rs.getString("id"));
-                log.info("id={}",member.getId());
                 return member;
             } else {
                 return null;
