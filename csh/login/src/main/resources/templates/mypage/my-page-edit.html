@@ -21,23 +21,20 @@
     >프로필 사진 업로드</label>
   </div>
   <div class="user-info">
-    <form method="get" th:action th:object="${member}" class="main">
+    <form action="" th:action th:object="${member}" method="post" class="main">
 
       <div>
         <label >이름</label>
-        <input th:field="*{name}"  readonly>
+        <input th:field="*{name}">
       </div>
       <div>
         <label >본인 설명</label>
-        <input th:field="*{description}" readonly>
+        <input   th:field="*{description}">
       </div>
 
-
       <!-- 확인 버튼 추가 -->
-    <button th:if="${loginMember.id == member.id}"
-                    id="confirmButton" class="confirm-button" type="button"
-            th:onclick="|location.href='@{/my-page/edit}'|">
-      수정</button>
+      <button id="confirmButton" class="confirm-button" type="submit"
+              th:onclick="|location.href='@{/my-page/edit}'|">저장</button>
     </form>
   </div>
 </div>

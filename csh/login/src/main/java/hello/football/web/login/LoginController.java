@@ -1,0 +1,70 @@
+package hello.football.web.login;
+
+
+import hello.football.domain.login.LoginService;
+import hello.football.domain.member.Member;
+import hello.football.web.login.loginform.LoginForm;
+import hello.football.web.session.SessionConst;
+import hello.football.web.session.SessionService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.*;
+import java.sql.SQLException;
+import java.util.Date;
+
+@Slf4j
+@Controller
+@RequiredArgsConstructor
+public class LoginController {
+    private final LoginService loginService;
+    private final SessionService sessionService;
+
+    @GetMapping("/login")
+    public String loginForm(@ModelAttribute("loginForm") LoginForm loginForm) {
+        return "login/loginForm";
+    }
+
+    @PostMapping("/login")
+    public String loginV4(@Validated @ModelAttribute LoginForm form, BindingResult bindingResult,
+                          @RequestParam(defaultValue="/") String redirectURL,
+                          HttpServletRequest request) throws SQLException {
+        if(bindingResult.hasErrors()){
+            return "/login/loginForm";
+        }
+        Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
+        if(loginMember==null){
+            bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
+            return "/login/loginForm";
+        }
+        //로그인 성공 처리
+        //세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
+        HttpSession session = request.getSession(); //디폴트가 true
+        //세션에 로그인 회원 정보 보관
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+        Date date = new Date(session.getLastAccessedTime());
+        sessionService.sessionSave(String.valueOf(date),form.getLoginId());
+
+
+        return "redirect:" + redirectURL;
+    }
+
+    @PostMapping("/logout")
+    public String logoutV3(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+
+        if(session != null){
+            session.invalidate();
+        }
+        return "redirect:/";
+    }
+
+
+}

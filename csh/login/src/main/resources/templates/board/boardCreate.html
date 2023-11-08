@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+  <div class="py-5 text-center">
+    <h2 th:text="${board.memberName}"> </h2>
+    <h2>님의 글쓰기</h2>
+  </div>
+
+  <!-- 글쓰기 폼 -->
+  <form th:action="@{/board/{id}(id=${board.memberId})}" th:object="${board}" method="post">
+    <div class="mb-3">
+      <label for="title" class="form-label">제목</label>
+      <input type="text" class="form-control" id="title" name="title" th:field="*{title}" required>
+    </div>
+    <div class="mb-3">
+      <label for="content" class="form-label">내용</label>
+      <textarea class="form-control" id="content" name="content" rows="4" th:field="*{boardContent}"
+                required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary"
+            th:onclick="|location.href='@{/board/{id}(id=${board.memberId})}'|">게시</button>
+  </form>
+
+</div> <!-- /container -->
+</body>
+</html>

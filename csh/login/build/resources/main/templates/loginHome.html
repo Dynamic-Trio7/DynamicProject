@@ -2,8 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
-  <link th:href="@{/css/bootstrap.min.css}"
-        href="../css/bootstrap.min.css" rel="stylesheet">
+  <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container" style="max-width: 600px">
@@ -14,14 +13,12 @@
   <hr class="my-4">
   <div class="row">
     <div class="col">
-      <button class="w-100 btn btn-secondary btn-lg" type="button"
-              th:onclick="|location.href='@{/items}'|">
+      <button class="w-100 btn btn-secondary btn-lg" type="button" th:onclick="|location.href='@{/items}'|">
         상품 관리
       </button>
     </div>
     <div class="col">
-      <button class="w-100 btn btn-secondary btn-lg" type="button"
-              th:onclick="|location.href='@{/my-page/{id}(id=${member.id})}'|">
+      <button class="w-100 btn btn-secondary btn-lg" type="button" th:onclick="|location.href='@{/my-page/{id}(id=${member.id})}'|">
         마이페이지
       </button>
     </div>
@@ -34,6 +31,36 @@
     </div>
   </div>
   <hr class="my-4">
+  <!-- 게시판 검색 폼 -->
+  <form action="/board/search" method="get">
+    <div class="input-group mb-3">
+      <input type="text" name="q" class="form-control" placeholder="게시판 검색" aria-label="게시판 검색" aria-describedby="button-search">
+      <button class="btn btn-outline-secondary" type="submit" id="button-search">검색</button>
+    </div>
+  </form>
+
+  <!-- 게시판 목록 -->
+  <table class="table">
+    <thead>
+    <tr>
+      <th >작성자</th>
+      <th >게시물</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="boards : ${board}">
+      <td><a  th:text="${boards.memberName}">회원id</a></td>
+      <td><a  th:text="${boards.title}">상품명</a></td>
+    </tr>
+    </tbody>
+
+    <!-- 추가적인 게시판 목록 항목을 필요한 만큼 반복 -->
+  </table>
+  <button class="btn btn-primary" type="button" th:onclick="|location.href='@{/board/{id}(id=${member.id})}'|">
+
+    글쓰기
+  </button>
+
 </div> <!-- /container -->
 </body>
 </html>

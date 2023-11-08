@@ -51,5 +51,18 @@ label {
     font-style: italic;
     color: #777;
 }
+.confirm-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.confirm-button:hover {
+    background-color: #0056b3;
+}
 
 
