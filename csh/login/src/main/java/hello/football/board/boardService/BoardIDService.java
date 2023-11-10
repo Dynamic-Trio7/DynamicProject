@@ -19,8 +19,6 @@ public class BoardIDService {
         int cnt=1;
         if (all != null) {
             for (Board fboard : all) {
-                log.info(fboard.getMemberName());
-                log.info(fboard.getMemberId());
                 if (fboard.getMemberId().equals(id)){
                     cnt++;
                 }

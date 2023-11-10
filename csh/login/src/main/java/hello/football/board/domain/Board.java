@@ -9,6 +9,8 @@ public class Board {
 
     String id;
 
+    String boardId;
+
     @NotEmpty
     String title;
 

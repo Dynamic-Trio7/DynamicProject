@@ -49,8 +49,8 @@
     </thead>
     <tbody>
     <tr th:each="boards : ${board}">
-      <td><a  th:text="${boards.memberName}">회원id</a></td>
-      <td><a  th:text="${boards.title}">상품명</a></td>
+      <td><a  th:text="${boards.memberName}" th:href="@{/my-page/{id}(id=${boards.memberId})}">회원 이름</a></td>
+      <td><a  th:text="${boards.title}" th:href="@{/board/{id}/{boardId}(id=${boards.memberId},boardId=${boards.boardId})}" >게시물 제목</a></td>
     </tr>
     </tbody>
 

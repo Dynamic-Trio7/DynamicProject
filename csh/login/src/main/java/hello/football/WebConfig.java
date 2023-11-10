@@ -1,6 +1,6 @@
 package hello.football;
 
-import hello.football.web.interceptor.LogCheckInterceptor;
+import hello.football.login.web.interceptor.LogCheckInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

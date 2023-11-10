@@ -1,8 +1,8 @@
 package hello.football;
 
-import hello.football.domain.item.Item;
-import hello.football.domain.item.ItemRepository;
-import hello.football.domain.member.MemberRepository;
+import hello.football.login.domain.item.Item;
+import hello.football.login.domain.item.ItemRepository;
+import hello.football.login.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
