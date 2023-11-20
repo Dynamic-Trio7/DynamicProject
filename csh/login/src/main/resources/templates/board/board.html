@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블로그</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center" style="color: #007bff;" th:text="${board.memberName}"></h1>
+
+    <!-- 블로그 게시물 -->
+    <div class="card" th:object="${board}">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${board.title}">게시물 제목</h5>
+            <p class="card-text" th:text="${board.boardContent}">게시물 내용</p>
+            <a th:href="@{/board/{id}/{boardId}/edit(id=${board.memberId},boardId=${board.boardId})}"
+               class="btn-edit" th:if="${member.id==board.memberId}">수정</a>
+
+            <a th:href="@{/board/{id}/{boardId}(id=${board.memberId},boardId=${board.boardId})}"
+               methods="delete"
+               class="btn-edit" th:if="${member.id==board.memberId}">삭제</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

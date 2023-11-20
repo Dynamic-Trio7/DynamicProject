@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/mypage/mypage.css" />
+  <title>마이페이지</title>
+</head>
+<body>
+<div class="container">
+  <h1>마이페이지</h1>
+  <div class="profile">
+
+    <input
+            type="file"
+            id="profilePicture"
+            accept="image/*"
+            style="display: none"
+    />
+    <label for="profilePicture" class="upload-button"
+    >프로필 사진 업로드</label>
+  </div>
+  <div class="user-info">
+    <form action="" th:action th:object="${member}" method="post" class="main">
+
+      <div>
+        <label >이름</label>
+        <input th:field="*{name}">
+      </div>
+      <div>
+        <label >본인 설명</label>
+        <input   th:field="*{description}">
+      </div>
+
+      <!-- 확인 버튼 추가 -->
+      <button id="confirmButton" class="confirm-button" type="submit"
+              th:onclick="|location.href='@{/my-page/edit}'|">저장</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
