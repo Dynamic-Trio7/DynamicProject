@@ -1,5 +1,14 @@
+body{
+    background-image: url(img/바다.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%
+}
 /* 머리 */
-
+.home{
+    font-size: 50px;
+    font-weight: 600;
+}
 .header{
     min-width: 328px;
     padding-top: 120px;
